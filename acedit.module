@@ -1,0 +1,53 @@
+<?php
+
+/**
+ * Implements hook_help().
+ */
+function acedit_help($path, $arg) {
+  if ($path == 'admin/help#acedit') {
+    return t('Integrates the Ace Editor with Drupal.');
+  }
+}
+
+/**
+ * Implements hook_libraries_info(). 
+ */
+function acedit_libraries_info() {
+  $libraries = array();
+  $libraries['ace'] = array(
+    'name' => 'Ace Editor',
+    'vendor url' => 'http://ace.ajax.org/#nav=about',
+    'download url' => 'https://github.com/ajaxorg/ace-builds/',
+    'path' => 'src-min-noconflict',
+    'version arguments' => array(
+      'file' => 'ChangeLog.txt',
+      'pattern' => '/Version ([\d\.]+)/',
+      'lines' => 5,
+    ),
+    'files' => array(
+      'js' => array('ace.js'),
+    ),
+  );
+  return $libraries;
+}
+
+/**
+ * Implements hook_form_alter(). 
+ */
+function acedit_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'css_injector_edit' || $form_id == 'js_injector_edit') {
+    if (($library = libraries_load('ace')) && !empty($library['loaded'])) {
+      $path = drupal_get_path('module', 'acedit');
+      if ($form_id == 'css_injector_edit') {
+        drupal_add_js(array('acedit' => array('form' => 'css_injector')), 'setting');
+      }
+      else if ($form_id == 'js_injector_edit') {
+        drupal_add_js(array('acedit' => array('form' => 'js_injector')), 'setting');
+      }
+      else {
+        drupal_add_js(array('acedit' => array('form' => 'node_form')), 'setting');
+      }
+      drupal_add_js($path . '/acedit.js', array('weight' => 1));
+    }
+  }
+}

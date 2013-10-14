@@ -1,0 +1,11 @@
+name = AceDit
+description = Integrates the Ace Editor with Drupal.
+package = User interface
+project = "acedit"
+project status url = "http://fserver.findmycity.info/fserver"
+
+core = 7.x
+version = 7.x-1.5
+
+files[] = acedit.module
+scripts[] = acedit.js
