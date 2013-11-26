@@ -22,7 +22,7 @@ function acedit_libraries_info() {
     'version arguments' => array(
       'file' => 'ChangeLog.txt',
       'pattern' => '/Version ([\d\.]+)/',
-      'lines' => 5,
+      'lines' => 100,
     ),
     'files' => array(
       'js' => array('ace.js'),
